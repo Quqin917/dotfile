@@ -239,7 +239,7 @@ require("modules.ui")
 local function border_adjust(c)
 	if #c.screen.clients == 1 then
 		c.border_width = beautiful.border_width
-		c.border_color = beautiful.border_focus
+		-- c.border_color = beautiful.border_focus
 	end
 end
 

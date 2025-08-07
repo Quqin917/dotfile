@@ -85,6 +85,9 @@ in
 
   fonts.packages = with pkgs; [
     nerd-fonts.jetbrains-mono
+    fira-code
+    font-awesome
+    ibm-plex
   ];
 
   # Select internationalisation properties.

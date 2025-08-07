@@ -2,102 +2,164 @@ local awful = require("awful")
 local gears = require("gears")
 local wibox = require("wibox")
 local beautiful = require("beautiful")
-local xresources = require("beautiful.xresources")
-local dpi = xresources.apply_dpi
+local dpi = beautiful.xresources.apply_dpi
 
-local function create_mac_button(c, color_focus, color_unfocus, shp)
-	local tb = wibox.widget({
-		forced_width = dpi(20),
-		forced_height = dpi(20),
-
-		bg = color_focus .. 90,
-		shape = shp,
-		border_color = beautiful.border_color,
-		widget = wibox.container.background,
+-- macOS-style Close Button (red)
+local function create_close_button(c)
+	local icon = wibox.widget({
+		widget = wibox.widget.textbox,
+		text = "",
+		font = "IBM Plex Sans 10",
+		align = "center",
+		valign = "center",
 	})
 
-	local function update()
-		if client.focus == c then
-			tb.bg = color_focus
-		else
-			tb.bg = color_unfocus
-		end
-	end
-	update()
+	local button = wibox.widget({
+		{
+			icon,
+			widget = wibox.container.margin,
+			margins = dpi(2),
+		},
+		id = "background_role",
+		widget = wibox.container.background,
+		shape = gears.shape.circle,
+		bg = beautiful.lred,
+		forced_width = dpi(20),
+		forced_height = dpi(20),
+	})
 
-	c:connect_signal("focus", update)
-	c:connect_signal("unfocus", update)
-
-	tb:connect_signal("mouse:enter", function()
-		tb.bg = color_focus .. 55
+	button:connect_signal("mouse::enter", function()
+		button.bg = beautiful.red
+		icon.text = ""
 	end)
-	tb:connect_signal("mouse:leave", function()
-		tb.bg = color_focus
+
+	button:connect_signal("mouse::leave", function()
+		button.bg = beautiful.lred
+		icon.text = ""
 	end)
 
-	tb.visible = true
-	return tb
-end
+	button:connect_signal("button::press", function()
+		button.bg = beautiful.dred
+	end)
 
-local helper = function(tl, tr, br, bl, rate)
-	return function(cr, width, height)
-		gears.shape.partial_squircle(cr, width, height, tl, tr, br, bl, rate, delta)
-	end
-end
-
-local function set_mac_titlebar(c)
-	local buttons = gears.table.join(
-		awful.button({}, 1, function()
-			c:emit_signal("request::activate", "titlebar", { raise = true })
-			if c.maximized == true then
-				c.maximized = false
-			end
-			awful.mouse.client.move(c)
-		end),
-		awful.button({}, 3, function()
-			c:emit_signal("request::activate", "titlebar", { raise = true })
-			awful.mouse.client.resize(c)
-		end)
-	)
-
-	local ci = function(width, height)
-		return function(cr)
-			gears.shape.circle(cr, width, height)
-		end
-	end
-
-	local close = create_mac_button(c, "#FF6057", beautiful.titlebar_unfocus, ci(dpi(11), dpi(11)))
-	close:connect_signal("button:press", function()
+	button:connect_signal("button::release", function()
 		c:kill()
 	end)
 
-	local wrap_widget = function(w)
-		return { w, top = dpi(20), widget = wibox.container.margin }
-	end
-
-	awful.titlebar(c, { position = "top", size = dpi(30), bg = "#00000000" }):setup({
-		{ -- left
-			wrap_widget({ close, left = dpi(25), widget = wibox.container.margin }),
-			buttons = buttons,
-			layout = wibox.layout.fixed.horizontal,
-		},
-		{ -- middle
-			awful.titlebar.widget.iconwidget(c),
-			layout = wibox.layout.fixed.horizontal,
-		},
-		{ -- right
-			layout = wibox.layout.fixed.horizontal,
-		},
-		bg = beautiful.bg,
-		shape = helper(beautiful.border_radius, true, true, false, false),
-		widget = wibox.container.background,
-	})
-
-	c.border_width = 0
-	c.border_color = beautiful.border_color or "#333333"
-
-	local titlebar_widget = awful.titlebar.widget.titlewidget(c)
-	titlebar_widget.align = "center"
+	return button
 end
 
-client.connect_signal("request::titlebars", set_mac_titlebar)
+-- macOS-style Minimize Button (yellow)
+local function create_minimize_button(c)
+	local icon = wibox.widget({
+		widget = wibox.widget.textbox,
+		text = "",
+		font = "IBM Plex Sans 7",
+		align = "center",
+		valign = "center",
+		forced_width = dpi(12),
+		forced_height = dpi(12),
+	})
+
+	local button = wibox.widget({
+		{
+			icon,
+			widget = wibox.container.margin,
+			margins = dpi(2),
+		},
+		id = "background_role",
+		widget = wibox.container.background,
+		shape = gears.shape.circle,
+		bg = beautiful.lyellow,
+		forced_width = dpi(20),
+		forced_height = dpi(20),
+	})
+
+	button:connect_signal("mouse::enter", function()
+		button.bg = beautiful.yellow
+		icon.text = " "
+	end)
+
+	button:connect_signal("mouse::leave", function()
+		button.bg = beautiful.lyellow
+		icon.text = ""
+	end)
+
+	button:connect_signal("button::press", function()
+		button.bg = beautiful.dyellow or beautiful.yellow
+	end)
+
+	button:connect_signal("button::release", function()
+		c.minimized = true
+	end)
+
+	return button
+end
+
+-- macOS-style Maximize/Unmaximize Button (green)
+local function create_maximize_button(c)
+	local icon = wibox.widget({
+		widget = wibox.widget.textbox,
+		text = "",
+		font = "IBM Plex Sans 10",
+		align = "center",
+		valign = "center",
+	})
+
+	local button = wibox.widget({
+		{
+			icon,
+			widget = wibox.container.margin,
+			margins = dpi(2),
+		},
+		id = "background_role",
+		widget = wibox.container.background,
+		shape = gears.shape.circle,
+		bg = beautiful.lgreen,
+		forced_width = dpi(20),
+		forced_height = dpi(20),
+	})
+
+	button:connect_signal("mouse::enter", function()
+		button.bg = beautiful.green
+		icon.text = "󰘖" -- Nerd Font maximize icon (you can change)
+	end)
+
+	button:connect_signal("mouse::leave", function()
+		button.bg = beautiful.lgreen
+		icon.text = ""
+	end)
+
+	button:connect_signal("button::press", function()
+		button.bg = beautiful.dgreen or beautiful.green
+	end)
+
+	button:connect_signal("button::release", function()
+		c.maximized = not c.maximized
+		c:raise()
+	end)
+
+	return button
+end
+
+-- Connect to titlebar request signal
+client.connect_signal("request::titlebars", function(c)
+	awful.titlebar(c, { size = dpi(30), bg = "#fffffffff" }):setup({
+		{ -- Left: macOS-style traffic light buttons
+			{
+				create_close_button(c),
+				create_minimize_button(c),
+				create_maximize_button(c),
+				spacing = dpi(6),
+				layout = wibox.layout.fixed.horizontal,
+			},
+			margins = dpi(4),
+			widget = wibox.container.margin,
+		},
+		nil,
+		{ -- Right: empty or extra buttons (optional)
+			layout = wibox.layout.fixed.horizontal,
+		},
+		layout = wibox.layout.align.horizontal,
+	})
+end)

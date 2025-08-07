@@ -65,7 +65,7 @@ awful.rules.rules = {
 	},
 
 	-- Add titlebars to normal clients and dialogs
-	{ rule_any = { type = { "normal" } }, properties = { titlebars_enabled = true } },
+	{ rule_any = { type = { "normal", "dialog" } }, properties = { titlebars_enabled = false } },
 }
 
 -- Set clients to always map on the specify tag
