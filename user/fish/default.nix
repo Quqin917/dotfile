@@ -22,7 +22,7 @@ in
   
     shellAbbrs = {
       g = "git";
-      gc = "git commit -m";
+      gcm = "git commit -m";
   
       t = "tmux";
       ta = "tmux attach";
@@ -43,13 +43,18 @@ in
       gs = "git status";
       gb = "git branch";
       gf = "git fetch";
+      gc = "git commit";
       gp = "git push";
       gl = "git log";
-      ga = "git add";
+      ga = "git add .";
   
       # Tmux
       tl = "tmux ls";
       tk = "tmux kill-server";
+
+      # code editor
+      # nvim="nix run ~/dotfiles/user/nvim";
+      # vim="nix run ~/dotfiles/user/nvim";
     };
   };
 

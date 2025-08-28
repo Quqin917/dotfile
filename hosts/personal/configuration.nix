@@ -1,8 +1,17 @@
-{ config, lib, pkgs, inputs, ... }:
+{ config, lib, pkgs, inputs, nixcatsPkg, ... }:
 
 let
-  picomConfigPath = "/home/quqin/dotfiles/config/picom/picom.conf";  # Make sure the path is correct
   nvidiaUtils = import ../../system/nvidia/nvidiaUtils.nix { inherit pkgs lib; };
+
+  awesome-git = pkgs.awesome.overrideAttrs (old: {
+    version = "git";
+    src = inputs.awesome-src;
+    
+    patches = [];
+    postPatch = ''
+      patchShebangs tests/examples/_postprocess.lua
+    '';
+  });
 in
 {
   imports =
@@ -13,18 +22,12 @@ in
     ../shared
 
     ../../system/nvidia
-    ../../system/battery
     ../../system/audio
+    ../../system/battery
   ];
 
-  home-manager = {
-    extraSpecialArgs = { inherit nvidiaUtils inputs; };
-    backupFileExtension = "backup";
+  nixpkgs.config.allowUnfree = true;
 
-    users = {
-      "quqin" = import ./home.nix;
-    };
-  };
 
   nix = {
     settings.experimental-features = [ 
@@ -35,23 +38,19 @@ in
     # Changes the default nixPath.
     # Check changes with `echo $NIX_PATH`
     nixPath = [
-      "nixos-config=/home/quqin/dotfile/hosts/quqin/configuration.nix"
+      "nixos-config=/home/quqin/dotfiles/hosts/quqin/configuration.nix"
       "nixpkgs=/nix/var/nix/profiles/per-user/root/channels/nixos"
       "/nix/var/nix/profiles/per-user/root/channels"
     ];
   };
 
-  nixpkgs.config = { 
-    allowUnfreePredicate = pkg: builtins.elem (lib.getName pkg) [
-      "nvidia-x11"
-      "nvidia-settings"
-      "nvidia-persistenced"
+  home-manager = {
+    extraSpecialArgs = { inherit nvidiaUtils pkgs inputs nixcatsPkg; };
+    backupFileExtension = "backup";
 
-      "steam"
-      "steam-original"
-      "steam-unwrapped"
-      "steam-run"
-    ];
+    users = {
+      "quqin" = import ./home.nix;
+    };
   };
 
   boot = {
@@ -97,11 +96,14 @@ in
   services.xserver = {
     enable = true;
 
-    windowManager.awesome.enable = true;
+    windowManager.awesome = {
+      enable = true;
+
+      package = awesome-git;
+    };
 
   	displayManager.sessionCommands = ''
-  	  picom --config ${picomConfigPath} -b
-	  xrandr --output eDP-1 --brightness 0.5
+	    xrandr --output eDP-1 --brightness 0.5
   	'';
   };
 
@@ -125,18 +127,44 @@ in
     # Power Management
     powertop
 
+    # Programs Inspection
+    btop
+
+    dex
+    xorg.xrdb
+
+    # Battery 
+    acpi
+
     picom
     nh
+    xorg.xrandr
+    xorg.xev
+    glxinfo
 
     pamixer
+    playerctl
     pavucontrol
     helvum
     libnotify
+
+    vulkan-tools
+    vulkan-loader
+    vulkan-validation-layers
+    protonup-qt
+    mangohud
+    gamemode
+    gamescope
   ];
+
+  environment.variables = {
+    WINEDEBUG = "-all";
+    GAMEMODERUNEXEC = "${pkgs.gamemode}/bin/gamemoderun";
+  };
 
   # List programs are being used
 
-  programs.firefox = { enable = true; };
+  programs.firefox.enable = true;
 
   programs.steam = {
     enable = true;
@@ -144,6 +172,7 @@ in
     dedicatedServer.openFirewall = true; # Open ports in the firewall for Source Dedicated Server
     localNetworkGameTransfers.openFirewall = true; # Open ports in the firewall for Steam Local Network Game Transfers
   };
+  programs.gamemode.enable = true;
 
   # List services are being enable
 

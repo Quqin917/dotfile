@@ -1,6 +1,10 @@
 { pkgs, lib, ... }:
 
 {
+  environment.systemPackages = with pkgs; [
+      auto-cpufreq
+  ];
+
   powerManagement = {
     enable = true;
     cpuFreqGovernor = lib.mkDefault "powersave";
@@ -22,7 +26,7 @@
     '';
   };
 
-  programs.auto-cpufreq = {
+  services.auto-cpufreq = {
     enable = true;
 
     settings = {

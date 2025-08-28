@@ -2,18 +2,21 @@
 
 {
   # Enable OpenGL
-  hardware.graphics.enable = true;
+  hardware.graphics = {
+    enable = true;
+    enable32Bit = true;
+  };
 
   # Loads Nvidia dedicated driver and Inter integrated driver
-  services.xserver.videoDrivers = [
-    "modesetting"
-    "nvidia"
-  ];
+  services.xserver = {
+    videoDrivers = [ "modesetting" "nvidia" ];
+  };
 
   hardware.nvidia = { 
     open = true;
 
-    package = config.boot.kernelPackages.nvidiaPackages.beta;
+    package = config.boot.kernelPackages.nvidiaPackages.stable;
+    nvidiaSettings = true;
 
     modesetting.enable = true;
 

@@ -1,9 +1,27 @@
 local gears = require("gears")
 local awful = require("awful")
 
-local modkey = "Mod4"
+local modkey = require("user").modkey
 
-local clientkeys = gears.table.join(
+local client = {}
+
+client.button = gears.table.join(
+	awful.button({}, 1, function(c)
+		c:emit_signal("request::activate", "mouse_click", { raise = true })
+	end),
+
+	awful.button({ modkey }, 1, function(c)
+		c:emit_signal("request::activate", "mouse_click", { raise = true })
+		awful.mouse.client.move(c)
+	end),
+
+	awful.button({ modkey }, 3, function(c)
+		c:emit_signal("request::activate", "mouse_click", { raise = true })
+		awful.mouse.client.resize(c)
+	end)
+)
+
+client.key = gears.table.join(
 	awful.key({ modkey }, "f", function(c)
 		c.fullscreen = not c.fullscreen
 		c:raise()
@@ -33,25 +51,29 @@ local clientkeys = gears.table.join(
 	end, { description = "toggle keep on top", group = "client" }),
 
 	awful.key({ modkey }, "n", function(c)
-		-- The client currently has the input focus, so it cannot be
-		-- minimized, since minimized clients can't have the focus.
 		c.minimized = true
 	end, { description = "minimize", group = "client" }),
 
 	awful.key({ modkey, "Control" }, "n", function()
-		local c = awful.client.restore()
-		-- Focus restored client
-		if c then
-			c:emit_signal("request::activate", "key.unminimize", { raise = true })
+		for _, c in ipairs(awful.screen.focused().clients) do
+			if c.minimized then
+				c.minimized = false
+
+				c:emit_signal("request::activate", "key.unminimize", { raise = true })
+				client.focus = c
+				return
+			end
 		end
 	end, { description = "restore minimized", group = "client" }),
 
 	-- all minimized clients are restored
 	awful.key({ modkey, "Shift" }, "n", function()
 		local tag = awful.tag.selected()
-		for i = 1, #tag:clients() do
-			tag:clients()[i].minimized = false
-			tag:clients()[i]:redraw()
+		for _, c in ipairs(tag:clients()) do
+			if c.minimized then
+				c.minimized = false
+				c:emit_signal("request::activate", "key.unminimize", { raise = true })
+			end
 		end
 	end, { description = "restore all minimized", group = "client" }),
 
@@ -87,4 +109,4 @@ local clientkeys = gears.table.join(
 	end, { description = "Resize Down", group = "layout" })
 )
 
-return clientkeys
+return client

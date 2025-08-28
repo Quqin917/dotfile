@@ -1,33 +1,32 @@
--- Your theme file: theme.lua
-
 local gears = require("gears")
+local gfs = require("gears.filesystem")
+
+local user = require("user")
 
 local theme = {}
 
+theme.icon_path = gfs.get_configuration_dir() .. "themes/icons"
+
 -- Fonts
-theme.font = "FireCode Nerd Font 10"
+theme.font = user.font
 
 -- Colors
-theme.bg_normal = "#222222"
-theme.bg_focus = "#535d6c"
-theme.bg_urgent = "#ff0000"
-theme.bg_minimize = "#444444"
-theme.bg_systray = theme.bg_normal
+theme.background = "#141414"
+theme.foreground = "#FFFFFF"
 
-theme.fg_normal = "#aaaaaa"
-theme.fg_focus = "#ffffff"
-theme.fg_urgent = "#ffffff"
-theme.fg_minimize = "#ffffff"
+theme.bg_normal = theme.background
+theme.fg_normal = theme.foreground
+
+theme.bg_focus = "#44475a"
 
 -- Borders
-theme.useless_gap = 0
-theme.border_width = 1
+theme.border_width = 0
 theme.border_normal = "#000000"
 theme.border_focus = "#535d6c"
 theme.border_marked = "#91231c"
 
--- Wallpaper
-theme.wallpaper = "~/wallpaper/pokemon_firered_wm_dark.png"
+theme.width = screen.primary.geometry.width
+theme.height = screen.primary.geometry.height
 
 -- macOS-style titlebar button colors
 theme.lred = "#ff5f57" -- Light red (idle)
@@ -46,7 +45,6 @@ theme.lblue = "#7fb4ff"
 theme.blue = "#2366c3"
 theme.dblue = "#123c81"
 
--- Optional: icons
 theme.layout_floating = gears.filesystem.get_themes_dir() .. "default/layouts/floatingw.png"
 theme.layout_tile = gears.filesystem.get_themes_dir() .. "default/layouts/tilew.png"
 

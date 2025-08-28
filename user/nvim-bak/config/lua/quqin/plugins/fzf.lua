@@ -27,7 +27,7 @@ return {
 
     {
       "<leader>fc",
-      "<CMD>lua require('fzf-lua').files({ case_mode = 'smart', cwd = '~/.config/nvim/' })<CR>",
+      "<CMD>lua require('fzf-lua').files({ cwd = '~/.config/nvim/lua/quqin', cmd = 'fd --type f --exclude undo' })<CR>",
       desc = "Find Config Files",
     },
   },

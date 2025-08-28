@@ -1,3 +1,6 @@
+-- Add a titlebar if titlebars_enabled is set to true in the rules.
+-- Enable titlebars with close, minimize, maximize buttons
+
 local awful = require("awful")
 local gears = require("gears")
 local wibox = require("wibox")
@@ -143,7 +146,7 @@ local function create_maximize_button(c)
 end
 
 -- Connect to titlebar request signal
-client.connect_signal("request::titlebars", function(c)
+return function(c)
 	awful.titlebar(c, { size = dpi(30), bg = "#fffffffff" }):setup({
 		{ -- Left: macOS-style traffic light buttons
 			{
@@ -162,4 +165,4 @@ client.connect_signal("request::titlebars", function(c)
 		},
 		layout = wibox.layout.align.horizontal,
 	})
-end)
+end

@@ -1,10 +1,9 @@
-{ config, lib, pkgs, nvidiaUtils, ... }:
+{ config, lib, pkgs, ... }:
 
 {
   imports = [
     ../../user/kitty
     ../../user/fish
-    ../../user/nvim
   ];
 
   home = {
@@ -36,12 +35,6 @@
 
       nix-output-monitor
 
-      # Programs Inspection
-      btop
-
-      # Battery 
-      acpi
-
       # Tools for working with usb and pci devices
       pciutils
       usbutils
@@ -70,11 +63,10 @@
     };
 
     sessionVariables = {
-      # QT_QPA_PLATFORMTHEME = "gtk3";  # or "qt5ct"
-      EDITOR = "nvim";
+      EDITOR = "vim";
     };
   };
-
+  
   gtk = {
     enable = true;
 
@@ -130,7 +122,4 @@
       export XDG_DATA_HOME="$HOME/.local/share"
     '';
   };
-
-  # Let Home Manager install and manage itself.
-  programs.home-manager.enable = true;
 }
