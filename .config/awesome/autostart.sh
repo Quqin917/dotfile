@@ -7,6 +7,5 @@ run() {
   fi
 }
 
-run "/home/quqin/.config/script/bluetooth-autoconnect.sh &"
-run "kdeconnectd &"
-run "picom --config /home/quqin/.config/picom/picom.conf -b"
+# run "picom --config ~/.config/picom/picom.conf -b"
+run "xrdb -merge ~/.Xresources"
