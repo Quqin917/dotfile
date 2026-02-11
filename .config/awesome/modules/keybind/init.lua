@@ -139,21 +139,30 @@ local globalkeys = gears.table.join(
 
   -- Volume
   awful.key({}, "XF86AudioLowerVolume", function()
-    awful.spawn("wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%-")
+    awful.spawn("wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%- -l 1")
   end, { description = "decrease volume", group = "audio" }),
 
   awful.key({}, "XF86AudioRaiseVolume", function()
-    awful.spawn("wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%+")
+    awful.spawn("wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%+ -l 1")
   end, { description = "increase volume", group = "audio" }),
 
   awful.key({}, "XF86AudioMute", function()
     awful.spawn("wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle")
   end, { description = "mute audio", group = "audio" }),
 
-  -- Music Software
-  awful.key({}, "#179", function()
-    awful.spawn("spotify")
-  end, { description = "Openning Music Software" })
+  awful.key({ modkey }, "F11", function()
+    awful.spawn("quiet-mode")
+  end, { description = "quiet study mode", group = "system" }
+  ),
+
+  awful.key({ modkey }, "F12", function()
+    awful.spawn("performance-mode")
+  end, { description = "performance mode", group = "system" }
+  ),
+
+  awful.key({ modkey }, "v", function()
+    awful.spawn("copyq show")
+  end, { description = "Clipboard Manager", group = "launcher" })
 )
 
 local tagsKey = require("modules.keybind.tags")

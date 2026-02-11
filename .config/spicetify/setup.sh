@@ -21,6 +21,7 @@ printf "DESTINATION FILE:\t\t %s\n" "$DESTINATION"
 substep_info "Creating Spicetify Config Folder"
 mkdir -vp "$DESTINATION/CustomApps/library"
 mkdir -vp "$DESTINATION/CustomApps/marketplace"
+mkdir -vp "$DESTINATION/CustomApps/lyrixed"
 mkdir -vp "$DESTINATION/Themes/marketplace"
 mkdir -vp "$DESTINATION/Extensions"
 

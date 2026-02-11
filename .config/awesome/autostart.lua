@@ -8,7 +8,7 @@ end
 
 run_once("picom --config ~/.config/picom/picom.conf")
 run_once("xset r rate 250 40")
-run_once("clipmenud")
+run_once("copyq &")
 run_once("nm-applet")
 run_once("wireplumber")
 run_once("xss-lock -- i3lock -c 000000 --nofork")
