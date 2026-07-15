@@ -23,13 +23,18 @@ awful.rules.rules = {
 		},
 	},
 
+	{ rule = { class = "Polybar" }, properties = { border_width = 0, focusable = false } },
+	{ rule = { class = "zen" }, properties = { border_width = 0 } },
+
 	-- Floating clients.
 	{
 		rule_any = {
 			instance = {
 				"DTA", -- Firefox addon DownThemAll.
 				"copyq", -- Includes session name in class.
+				"bitwarden",
 				"pinentry",
+				"nm-connection-editor",
 			},
 			class = {
 				"Arandr",
@@ -53,7 +58,6 @@ awful.rules.rules = {
 			role = {
 				"AlarmWindow", -- Thunderbird's calendar.
 				"ConfigManager", -- Thunderbird's about:config.
-				"pop-up", -- e.g., Google Chrome's (detached) Developer Tools.
 			},
 		},
 

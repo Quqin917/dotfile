@@ -9,7 +9,7 @@ local hotkeys_popup = require("awful.hotkeys_popup")
 
 -- Enable hotkeys help widget for VIM and other apps
 -- when client with a matching name is opened:
-require("awful.hotkeys_popup.keys")
+-- require("awful.hotkeys_popup.keys")
 
 local myMenu = require("modules.menu")
 
@@ -162,7 +162,11 @@ local globalkeys = gears.table.join(
 
   awful.key({ modkey }, "v", function()
     awful.spawn("copyq show")
-  end, { description = "Clipboard Manager", group = "launcher" })
+  end, { description = "Clipboard Manager", group = "launcher" }),
+
+  awful.key({ modkey, "Control" }, "l", function()
+    awful.spawn("/home/quqin/.local/bin/bitwarden")
+  end, { description = "Password Manager", group = "launcher" })
 )
 
 local tagsKey = require("modules.keybind.tags")

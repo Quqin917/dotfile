@@ -21,6 +21,7 @@ printf "DESTINATION FILE:\t\t %s\n" "$DESTINATION"
 substep_info "Creating folder for awesomeWM"
 mkdir -vp "$DESTINATION/awful/hotkeys_popup/keys"
 mkdir -vp "$DESTINATION/modules/keybind"
+mkdir -vp "$DESTINATION/modules/client"
 
 substep_info "Linking awesomeWM Configuration..."
 fd --type f --exclude setup.sh | while read -r fn; do

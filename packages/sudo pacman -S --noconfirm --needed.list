@@ -20,3 +20,8 @@ flameshot
 ninja
 picom
 stylua
+clang
+ripgrep
+lazygit
+valgrind
+ttf-jetbrains-mono-nerd
