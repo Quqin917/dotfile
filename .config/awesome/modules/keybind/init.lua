@@ -20,153 +20,156 @@ local modkey = "Mod4"
 
 -- {{{ Key bindings
 local globalkeys = gears.table.join(
--- show help
-  awful.key({ modkey }, "s", hotkeys_popup.show_help, { description = "show help", group = "awesome" }),
+	-- show help
+	awful.key({ modkey }, "s", hotkeys_popup.show_help, { description = "show help", group = "awesome" }),
 
-  -- Navigate between windows
-  awful.key({ modkey }, "Left", awful.tag.viewprev, { description = "view previous", group = "navigation" }),
-  awful.key({ modkey }, "Right", awful.tag.viewnext, { description = "view next", group = "navigation" }),
-  awful.key({ modkey }, "Escape", awful.tag.history.restore, { description = "go back", group = "navigation" }),
+	-- Navigate between windows
+	awful.key({ modkey }, "Left", awful.tag.viewprev, { description = "view previous", group = "navigation" }),
+	awful.key({ modkey }, "Right", awful.tag.viewnext, { description = "view next", group = "navigation" }),
+	awful.key({ modkey }, "Escape", awful.tag.history.restore, { description = "go back", group = "navigation" }),
 
-  -- Navigate between application inside windows
-  awful.key({ modkey }, "j", function()
-    awful.client.focus.byidx(1)
-  end, { description = "focus next by index", group = "client" }),
+	-- Navigate between application inside windows
+	awful.key({ modkey }, "j", function()
+		awful.client.focus.byidx(1)
+	end, { description = "focus next by index", group = "client" }),
 
-  awful.key({ modkey }, "k", function()
-    awful.client.focus.byidx(-1)
-  end, { description = "focus previous by index", group = "client" }),
+	awful.key({ modkey }, "k", function()
+		awful.client.focus.byidx(-1)
+	end, { description = "focus previous by index", group = "client" }),
 
-  -- Show menu
-  awful.key({ modkey }, "w", function()
-    myMenu.mainMenu:show()
-  end, { description = "show main menu", group = "awesome" }),
+	-- Show menu
+	awful.key({ modkey }, "w", function()
+		myMenu.mainMenu:show()
+	end, { description = "show main menu", group = "awesome" }),
 
-  -- Manipulate application position
-  awful.key({ modkey, "Shift" }, "j", function()
-    awful.client.swap.byidx(1)
-  end, { description = "swap with next client by index", group = "client" }),
-  awful.key({ modkey, "Shift" }, "k", function()
-    awful.client.swap.byidx(-1)
-  end, { description = "swap with previous client by index", group = "client" }),
+	-- Manipulate application position
+	awful.key({ modkey, "Shift" }, "j", function()
+		awful.client.swap.byidx(1)
+	end, { description = "swap with next client by index", group = "client" }),
+	awful.key({ modkey, "Shift" }, "k", function()
+		awful.client.swap.byidx(-1)
+	end, { description = "swap with previous client by index", group = "client" }),
 
-  -- Manipulate cursor focus
-  awful.key({ modkey, "Control" }, "j", function()
-    awful.screen.focus_relative(1)
-  end, { description = "focus the next screen", group = "screen" }),
-  awful.key({ modkey, "Control" }, "k", function()
-    awful.screen.focus_relative(-1)
-  end, { description = "focus the previous screen", group = "screen" }),
+	-- Manipulate cursor focus
+	awful.key({ modkey, "Control" }, "j", function()
+		awful.screen.focus_relative(1)
+	end, { description = "focus the next screen", group = "screen" }),
+	awful.key({ modkey, "Control" }, "k", function()
+		awful.screen.focus_relative(-1)
+	end, { description = "focus the previous screen", group = "screen" }),
 
-  -- Jump cursor to application with urgent state
-  awful.key({ modkey }, "u", awful.client.urgent.jumpto, { description = "jump to urgent client", group = "client" }),
+	-- Jump cursor to application with urgent state
+	awful.key({ modkey }, "u", awful.client.urgent.jumpto, { description = "jump to urgent client", group = "client" }),
 
-  -- Goes to the previous application
-  awful.key({ modkey }, "Tab", function()
-    awful.client.focus.history.previous()
-    if client.focus then
-      client.focus:raise()
-    end
-  end, { description = "go back", group = "client" }),
+	-- Goes to the previous application
+	awful.key({ modkey }, "Tab", function()
+		awful.client.focus.history.previous()
+		if client.focus then
+			client.focus:raise()
+		end
+	end, { description = "go back", group = "client" }),
 
-  -- Screenshot
-  awful.key({ modkey, "Shift" }, "s", function()
-    awful.spawn("flameshot gui")
-  end, { description = "Screenshot", group = "client" }),
+	-- Screenshot
+	awful.key({ modkey, "Shift" }, "s", function()
+		awful.spawn("flameshot gui")
+	end, { description = "Screenshot", group = "client" }),
 
-  -- Standard program
-  awful.key({ modkey }, "q", function()
-    awful.spawn(terminal)
-  end, { description = "open a terminal", group = "launcher" }),
-  awful.key({ modkey, "Control" }, "r", awesome.restart, { description = "reload awesome", group = "awesome" }),
-  awful.key({ modkey, "Shift" }, "q", awesome.quit, { description = "quit awesome", group = "awesome" }),
+	-- Standard program
+	awful.key({ modkey }, "q", function()
+		awful.spawn(terminal)
+	end, { description = "open a terminal", group = "launcher" }),
+	awful.key({ modkey, "Control" }, "r", awesome.restart, { description = "reload awesome", group = "awesome" }),
+	awful.key({ modkey, "Shift" }, "q", awesome.quit, { description = "quit awesome", group = "awesome" }),
 
-  -- Layout Group
-  awful.key({ modkey, "Shift" }, "h", function()
-    awful.tag.incnmaster(1, nil, true)
-  end, { description = "increase the number of master clients", group = "layout" }),
-  awful.key({ modkey, "Shift" }, "l", function()
-    awful.tag.incnmaster(-1, nil, true)
-  end, { description = "decrease the number of master clients", group = "layout" }),
-  awful.key({ modkey, "Control" }, "h", function()
-    awful.tag.incncol(1, nil, true)
-  end, { description = "increase the number of columns", group = "layout" }),
-  awful.key({ modkey, "Control" }, "l", function()
-    awful.tag.incncol(-1, nil, true)
-  end, { description = "decrease the number of columns", group = "layout" }),
-  awful.key({ modkey, "Shift" }, "Right", function()
-    awful.tag.incmwfact(0.05)
-  end, { description = "Resize Left", group = "layout" }),
+	-- Layout Group
+	awful.key({ modkey, "Shift" }, "h", function()
+		awful.tag.incnmaster(1, nil, true)
+	end, { description = "increase the number of master clients", group = "layout" }),
+	awful.key({ modkey, "Shift" }, "l", function()
+		awful.tag.incnmaster(-1, nil, true)
+	end, { description = "decrease the number of master clients", group = "layout" }),
+	awful.key({ modkey, "Control" }, "h", function()
+		awful.tag.incncol(1, nil, true)
+	end, { description = "increase the number of columns", group = "layout" }),
+	awful.key({ modkey, "Control" }, "l", function()
+		awful.tag.incncol(-1, nil, true)
+	end, { description = "decrease the number of columns", group = "layout" }),
+	awful.key({ modkey, "Shift" }, "Right", function()
+		awful.tag.incmwfact(0.05)
+	end, { description = "Resize Left", group = "layout" }),
 
-  awful.key({ modkey, "Shift" }, "Left", function()
-    awful.tag.incmwfact(-0.05)
-  end, { description = "Resize Right", group = "layout" }),
+	awful.key({ modkey, "Shift" }, "Left", function()
+		awful.tag.incmwfact(-0.05)
+	end, { description = "Resize Right", group = "layout" }),
 
-  awful.key({ modkey, "Shift" }, "Down", function()
-    awful.client.incwfact(0.05)
-  end, { description = "Resize Downward", group = "layout" }),
+	awful.key({ modkey, "Shift" }, "Down", function()
+		awful.client.incwfact(0.05)
+	end, { description = "Resize Downward", group = "layout" }),
 
-  awful.key({ modkey, "Shift" }, "Up", function()
-    awful.client.incwfact(-0.05)
-  end, { description = "Resize Uppward", group = "layout" }),
+	awful.key({ modkey, "Shift" }, "Up", function()
+		awful.client.incwfact(-0.05)
+	end, { description = "Resize Uppward", group = "layout" }),
 
-  awful.key({ modkey }, "space", function()
-    awful.layout.inc(1)
-  end, { description = "select next", group = "layout" }),
+	awful.key({ modkey }, "space", function()
+		awful.layout.inc(1)
+	end, { description = "select next", group = "layout" }),
 
-  awful.key({ modkey, "Shift" }, "space", function()
-    awful.layout.inc(-1)
-  end, { description = "select previous", group = "layout" }),
+	awful.key({ modkey, "Shift" }, "space", function()
+		awful.layout.inc(-1)
+	end, { description = "select previous", group = "layout" }),
 
-  -- Prompt
-  awful.key({ modkey, "Shift" }, "r", function()
-    awful.screen.focused().mypromptbox:run()
-  end, { description = "run prompt", group = "launcher" }),
+	-- Prompt
+	awful.key({ modkey, "Shift" }, "r", function()
+		awful.screen.focused().mypromptbox:run()
+	end, { description = "run prompt", group = "launcher" }),
 
-  awful.key({ modkey }, "x", function()
-    awful.prompt.run({
-      prompt = "Run Lua code: ",
-      textbox = awful.screen.focused().mypromptbox.widget,
-      exe_callback = awful.util.eval,
-      history_path = awful.util.get_cache_dir() .. "/history_eval",
-    })
-  end, { description = "lua execute prompt", group = "awesome" }),
+	awful.key({ modkey }, "x", function()
+		awful.prompt.run({
+			prompt = "Run Lua code: ",
+			textbox = awful.screen.focused().mypromptbox.widget,
+			exe_callback = awful.util.eval,
+			history_path = awful.util.get_cache_dir() .. "/history_eval",
+		})
+	end, { description = "lua execute prompt", group = "awesome" }),
 
-  -- Menubar
-  awful.key({ modkey }, "p", function()
-    awful.spawn("rofi -show drun")
-  end, { description = "show the menubar", group = "launcher" }),
+	-- Menubar
+	awful.key({ modkey }, "p", function()
+		awful.spawn("rofi -show drun")
+	end, { description = "show the menubar", group = "launcher" }),
 
-  -- Volume
-  awful.key({}, "XF86AudioLowerVolume", function()
-    awful.spawn("wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%- -l 1")
-  end, { description = "decrease volume", group = "audio" }),
+	-- Volume
+	awful.key({}, "XF86AudioLowerVolume", function()
+		awful.spawn("wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%- -l 1")
+	end, { description = "decrease volume", group = "audio" }),
 
-  awful.key({}, "XF86AudioRaiseVolume", function()
-    awful.spawn("wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%+ -l 1")
-  end, { description = "increase volume", group = "audio" }),
+	awful.key({}, "XF86AudioRaiseVolume", function()
+		awful.spawn("wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%+ -l 1")
+	end, { description = "increase volume", group = "audio" }),
 
-  awful.key({}, "XF86AudioMute", function()
-    awful.spawn("wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle")
-  end, { description = "mute audio", group = "audio" }),
+	awful.key({}, "XF86AudioMute", function()
+		awful.spawn("wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle")
+	end, { description = "mute audio", group = "audio" }),
 
-  awful.key({ modkey }, "F11", function()
-    awful.spawn("quiet-mode")
-  end, { description = "quiet study mode", group = "system" }
-  ),
+	-- Native TLP Power Profile Management
+	awful.key({ modkey, "Shift" }, "p", function()
+		awful.spawn("sudo tlp performance")
+	end, { description = "TLP: Performance Mode", group = "system" }),
 
-  awful.key({ modkey }, "F12", function()
-    awful.spawn("performance-mode")
-  end, { description = "performance mode", group = "system" }
-  ),
+	awful.key({ modkey, "Shift" }, "b", function()
+		awful.spawn("sudo tlp balanced")
+	end, { description = "TLP: Balanced Mode", group = "system" }),
 
-  awful.key({ modkey }, "v", function()
-    awful.spawn("copyq show")
-  end, { description = "Clipboard Manager", group = "launcher" }),
+	awful.key({ modkey, "Shift" }, "s", function()
+		awful.spawn("sudo tlp power-saver")
+	end, { description = "TLP: Power-Saver Mode", group = "system" }),
 
-  awful.key({ modkey, "Control" }, "l", function()
-    awful.spawn("/home/quqin/.local/bin/bitwarden")
-  end, { description = "Password Manager", group = "launcher" })
+	awful.key({ modkey }, "v", function()
+		awful.spawn("copyq show")
+	end, { description = "Clipboard Manager", group = "launcher" }),
+
+	awful.key({ modkey, "Control" }, "l", function()
+		awful.spawn("/home/quqin/.local/bin/bitwarden")
+	end, { description = "Password Manager", group = "launcher" })
 )
 
 local tagsKey = require("modules.keybind.tags")
