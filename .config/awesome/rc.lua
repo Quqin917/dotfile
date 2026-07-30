@@ -277,7 +277,7 @@ awful.screen.connect_for_each_screen(function(s)
 end)
 
 -- {{{ Mouse bindings
-dofile(config_path .. "modules/keybind/mouse.lua")
+require("modules.keybind.mouse")
 -- }}}
 
 -- {{{ Key bindings
@@ -288,10 +288,10 @@ root.keys(globalkeys)
 -- }}}
 
 -- {{{ Rules
-dofile(config_path .. "modules/rules.lua")
+require("modules.rules")
 -- }}}
 
-dofile(config_path .. "modules/client/unfocus.lua")
+require("modules.client")
 
 -- {{{ Signals
 -- Signal function to execute when a new client appears.

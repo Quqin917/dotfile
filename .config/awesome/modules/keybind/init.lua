@@ -71,7 +71,7 @@ local globalkeys = gears.table.join(
 
 	-- Screenshot
 	awful.key({ modkey, "Shift" }, "s", function()
-		awful.spawn("flameshot gui")
+		awful.spawn("env QT_AUTO_SCREEN_SCALE_FACTOR=0 flameshot gui")
 	end, { description = "Screenshot", group = "client" }),
 
 	-- Standard program
@@ -159,7 +159,7 @@ local globalkeys = gears.table.join(
 		awful.spawn("sudo tlp balanced")
 	end, { description = "TLP: Balanced Mode", group = "system" }),
 
-	awful.key({ modkey, "Shift" }, "s", function()
+	awful.key({ modkey, "Shift" }, "z", function()
 		awful.spawn("sudo tlp power-saver")
 	end, { description = "TLP: Power-Saver Mode", group = "system" }),
 

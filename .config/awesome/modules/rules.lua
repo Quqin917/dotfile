@@ -36,6 +36,7 @@ awful.rules.rules = {
 				"pinentry",
 				"nm-connection-editor",
 			},
+
 			class = {
 				"Arandr",
 				"Blueman-manager",
@@ -48,6 +49,7 @@ awful.rules.rules = {
 				"veromix",
 				"xtightvncviewer",
 				"Qalculate-gtk",
+				"flameshot",
 			},
 
 			-- Name property matching (note: xprop can help you with these names)
