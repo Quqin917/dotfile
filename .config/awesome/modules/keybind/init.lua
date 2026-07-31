@@ -3,6 +3,7 @@
 -- Standard awesome library
 local gears = require("gears")
 local awful = require("awful")
+local naughty = require("naughty")
 
 -- Theme handling library
 local hotkeys_popup = require("awful.hotkeys_popup")
@@ -153,14 +154,17 @@ local globalkeys = gears.table.join(
 	-- Native TLP Power Profile Management
 	awful.key({ modkey, "Shift" }, "p", function()
 		awful.spawn("sudo tlp performance")
+		naughty.notify({ title = "Power Profile", text = "Switching to Performance", timeout = 3 })
 	end, { description = "TLP: Performance Mode", group = "system" }),
 
 	awful.key({ modkey, "Shift" }, "b", function()
 		awful.spawn("sudo tlp balanced")
+		naughty.notify({ title = "Power Profile", text = "Switching to Balanced", timeout = 3 })
 	end, { description = "TLP: Balanced Mode", group = "system" }),
 
 	awful.key({ modkey, "Shift" }, "z", function()
 		awful.spawn("sudo tlp power-saver")
+		naughty.notify({ title = "Power Profile", text = "Switching to Power-Saver", timeout = 3 })
 	end, { description = "TLP: Power-Saver Mode", group = "system" }),
 
 	awful.key({ modkey }, "v", function()
