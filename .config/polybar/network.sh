@@ -19,8 +19,14 @@ if [ -f "$STATE_FILE" ]; then
         echo "$icon Offline"
     else
         ip_addr=$(ip addr show "$interface" | grep 'inet ' | awk '{print $2}' | cut -d/ -f1)
-        mac_addr=$(cat "/sys/class/net/$interface/address")
-        echo "$icon $ip_addr %{F#6c7086}($mac_addr)%{F-}"
+        
+        # If the interface is NOT ethernet, fetch the Wi-Fi SSID
+        if [[ "$interface" != e* ]]; then
+            ssid=$(nmcli -t -f active,ssid dev wifi 2>/dev/null | grep '^yes' | cut -d: -f2)
+            echo "$icon $ssid %{F#6c7086}($ip_addr)%{F-}"
+        else
+            echo "$icon Ethernet %{F#6c7086}($ip_addr)%{F-}"
+        fi
     fi
 else
     # Just show the icon

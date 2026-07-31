@@ -148,60 +148,7 @@ local function set_wallpaper(s)
 	end
 end
 
-local function get_cons_mode()
-	local f = io.open("/sys/bus/platform/drivers/ideapad_acpi/VPC2004:00/conservation_mode", "r")
-	if f then
-		local status = f:read("*all"):gsub("%s+", "")
-		f:close()
-		return status == "1" and "󰚥 Study" or "󱈑 Full"
-	end
-	return "Mode: ?"
-end
-
--- Create the widget
-local cons_widget = wibox.widget.textbox()
-gears.timer({
-	timeout = 30,
-	call_now = true,
-	autostart = true,
-	callback = function()
-		cons_widget.text = " | " .. get_cons_mode() .. " | "
-	end,
-})
-
-local function update_polybar_layout()
-	local s = awful.screen.focused()
-	if not s or not s.selected_tag then
-		return
-	end
-
-	local layout_name = awful.layout.getname(s.selected_tag.layout) or "unknown"
-	local text = ""
-
-	-- Wrap icons in color tags %{F...} and add extra spaces to prevent font clipping
-	if layout_name == "tile" then
-		text = "%{F#a6e3a1}󰙀%{F-}  Tile"
-	elseif layout_name == "Left" or layout_name == "tileleft" then
-		text = "%{F#a6e3a1}󰙂%{F-}  Tile Left"
-	elseif layout_name == "max" then
-		text = "%{F#a6e3a1}󰍉%{F-}  Max"
-	elseif layout_name == "t" or layout_name == "floating" then
-		text = "%{F#a6e3a1}󱂬%{F-}  Float"
-	else
-		text = layout_name
-	end
-
-	local file = io.open("/tmp/awesome_layout", "w")
-	if file then
-		file:write(text .. "\n")
-		file:close()
-	end
-end
-
--- Update on layout switch, tag switch, or window focus changes
-tag.connect_signal("property::layout", update_polybar_layout)
-tag.connect_signal("property::selected", update_polybar_layout)
-client.connect_signal("focus", update_polybar_layout)
+require("modules.polybar")
 
 screen.connect_signal("request::desktop_decoration", function(s)
 	s.padding = { top = 7 } -- Increased slightly to accommodate the 32pt bar + gap
@@ -249,8 +196,6 @@ awful.screen.connect_for_each_screen(function(s)
 		filter = awful.widget.tasklist.filter.currenttags,
 		buttons = tasklist_buttons,
 	})
-
-	update_polybar_layout(s)
 
 	-- Create the wibox
 	-- s.mywibox = awful.wibar({ position = "top", screen = s })
